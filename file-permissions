@@ -1,0 +1,98 @@
+1. Once logged on as the 'root' user, create a directory (in the root filesystem - i.e. /) called 'mybkup'. Change to that directory. Copy all the contents, recursively, of the /etc directory to the new directory.
+
+user@linuxacademy:~$ sudo su -
+
+root@linuxacademy:~# cd /
+
+root@linuxacademy:/# mkdir mybkup
+
+root@linuxacademy:/# cd mybkup
+
+root@linuxacademy:/mybkup# cp -rf /etc/* .
+
+root@linuxacademy:/mybkup# ls -al
+
+(Output) Should be the contents of the /etc directory displayed here
+
+ 
+
+2. Using the numeric permission notation, set the permissions on the 'mybkup' directory to world read/write/execute. Be sure to set the permissions ONLY on that directory and not on the contents of the directory.
+
+root@linuxacademy:/mybkup# cd ..
+
+root@linuxacademy:/# chmod 777 mybkup
+
+ 
+
+3.  Double check your permissions. Become 'user' on the system and list the contents of that directory to be sure it can be accessed.
+
+root@linuxacademy:/# su - user
+
+user@linuxacademy:~$ ls -al /mybkup
+
+ 
+
+4. Become the root user once again. In the created 'mybkp' directory, create a file that contains the contents as follows - echo "Hello World". Name that file 'myprog'.
+
+user@linuxacademy:~$ exit
+
+root@linuxacademy:/# cd mybkup
+
+root@linuxacademy:/mybkup# echo "echo \"Hello World\" " > myprog
+
+ 
+
+5. Using the text based permission notation, set the permissions on the 'myprog' file such that the owner can read/write/execute, the group owner can read/execute and everyone else can read/execute. List the permissions once complete to verify.
+
+root@linuxacademy:/mybkup# chmod a+rx myprog
+
+root@linuxacademy:/mybkup# chmod g+rx myprog
+
+root@linuxacademy:/mybkup# chmod u+rwx myprog
+
+ 
+
+root@linuxacademy:/mybkup# ls -al myprog
+
+(Ouptut) -rwxr-xr-x 1 root root 20 Aug  2 18:04 myprog 
+
+ 
+
+6. Become 'user' on the system and 'run' the new 'myprog' file using the proper path. Be sure you get the greeting we created in Step 4, if not, double check your permissions settings.
+
+root@linuxacademy:/mybkup# sudo su - user
+
+user@linuxacademy:~$ /mbkup/myprog
+
+(Output) Hello World
+
+ 
+
+7. Become the root user once again. Change the file permissions on the 'mybkup' directory using the numeric permission notation, such that ONLY the owner can read/write/execute. All other users should have NO ACCESS to the directory or its contents (apply those permission recursively).
+
+user@linuxacademy:~$ exit
+
+root@linuxacademy:/mybkup# cd ..
+
+root@linuxacademy:/# chmod 700 -R mybkup
+
+root@linuxacademy:/# ls -al
+
+(Output) ... included amongst the other directories should be a line reading... 
+
+(Output) drwx------ 153 root root 12288 Aug  2 18:04 mybkup
+
+ 
+
+8. Double check your permissions. Become 'user' on the system and list the contents of that directory and note the response.
+
+root@linuxacademy:/# sudo su - user
+
+user@linuxacademy:~$ ls -al /mybkup
+
+(Output) ls: cannot open directory /mybkup: Permission denied
+
+ 
+
+ 
+
