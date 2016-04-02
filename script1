@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo "This script is beginning..."
+
+DIRECTORY="test"
+COUNTER=0
+
+echo "Directory Searching for: $DIRECTORY"
+echo "The Counter is Currently Set at $COUNTER"
+
+if [ -d "$DIRECTORY" ]; then
+    echo "The $DIRECTORY Directory exists!"
+else
+    echo "The $DIRECTORY Directory does NOT exist!"
+
+    while [ $COUNTER -le 5 ]
+    do
+        echo "This is Execution Line: $COUNTER"
+        COUNTER=$(( $COUNTER + 1 ))
+    done
+fi
+
+echo "This script is complete."
+
+ 
+
+ 
