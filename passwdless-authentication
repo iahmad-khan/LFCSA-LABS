@@ -1,0 +1,174 @@
+1. Once you have started your Linux Academy Lab Servers and logged in with the 'user' account and password provided, use the appropriate command to generate a public and private key pair on 'Server1'. Verify the key pair was created by changing to the appropriate directory and listing the files.
+
+    [user@tcox4 ~]$ ssh-keygen
+
+    Generating public/private rsa key pair.
+
+    Enter file in which to save the key (/home/user/.ssh/id_rsa): 
+
+    Created directory '/home/user/.ssh'.
+
+    Enter passphrase (empty for no passphrase): 
+
+    Enter same passphrase again: 
+
+    Your identification has been saved in /home/user/.ssh/id_rsa.
+
+    Your public key has been saved in /home/user/.ssh/id_rsa.pub.
+
+    The key fingerprint is:
+
+    71:5f:cb:26:be:7a:47:4d:a1:3a:d5:48:1c:eb:f3:07 user@tcox4.mylabserver.com
+
+    The key's randomart image is:
+
+    +--[ RSA 2048]----+
+
+    |            ...  |
+
+    |             o.. |
+
+    |        . . ..= .|
+
+    |         o ..* o.|
+
+    |        S   =oEo |
+
+    |           + o+..|
+
+    |            o. ..|
+
+    |            ... .|
+
+    |          .o..   |
+
+    +-----------------+
+
+    [user@tcox4 ~]$ cd .ssh
+
+    [user@tcox4 .ssh]$ ls -al
+
+    total 12
+
+    drwx------. 2 user user   36 Sep  8 20:53 .
+
+    drwx------. 9 user user 4096 Sep  8 20:52 ..
+
+    -rw-------. 1 user user 1675 Sep  8 20:53 id_rsa
+
+    -rw-r--r--. 1 user user  408 Sep  8 20:53 id_rsa.pub
+
+     
+
+2. Exchange the public key with 'Server2' and the 'user' account on that server. Verify that the identity appearing in the appropriate key file matches the user and system name/IP of the originating 'Server1'.
+
+    [user@tcox4 .ssh]$ ssh-copy-id user@172.31.117.2
+
+    The authenticity of host '172.31.117.2 (172.31.117.2)' can't be established.
+
+    ECDSA key fingerprint is 0d:0c:b1:1d:e1:cf:6d:9f:51:bf:0f:dc:60:82:a1:73.
+
+    Are you sure you want to continue connecting (yes/no)? yes
+
+    /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+
+    /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+
+    user@172.31.117.2's password: 
+
+     
+
+    Number of key(s) added: 1
+
+     
+
+    Now try logging into the machine, with:   "ssh 'user@172.31.117.2'"
+
+    and check to make sure that only the key(s) you wanted were added.
+
+    [user@tcox5 ~]$ cd .ssh
+
+    [user@tcox5 .ssh]$ ll
+
+    total 4
+
+    -rw-------. 1 user user 408 Sep  8 20:54 authorized_keys
+
+    [user@tcox5 .ssh]$ cat authorized_keys 
+
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnwTTIVeMji2sFMkrxqwwgCLyJjOqKf/SrdrX3Vm4DZ4FMxvVEUS3EV0ewmPjaR4AXTW7YKy9gB+D5GJaWrQIp/JJj5AIWv4xm2VEXDb9FDNlYg/Uwdhq9YXzbsC15xvUjOI89l65W7/QItPNUc9SIOsB6/BVGGrEqPvWeu64EPcU1oZn9wMWqTZaJCyxsRlFjmLdIo9aVb8ORNusKOJO30VzyZcxYPa3MF2YAoa0CzbSHVLNE0e1vMt9ZLtQRVkpBg7wk7+IUoNGVMfA/QQH/Di2PoBjWColJi6l1P4lpY85wjeM6uU9igyFio6bnBS2xU+Jta4naAsYwIu2R6i5x user@tcox4.mylabserver.com
+
+ 
+
+3. Verify that you are able to log into 'Server2' from 'Server1' with the 'user' account without entering a password. Check the hostname file to be sure you are logged into 'Server2'.
+
+    [user@tcox4 .ssh]$ ssh user@172.31.117.2
+
+    Last login: Tue Sep  8 20:52:11 2015 from 99-198-189-168.mci.googlefiber.net
+
+    [user@tcox5 ~]$ cat /etc/hostname
+
+    tcox5.mylabserver.com
+
+  
+
+4. Create a file on 'Server1' using any method you choose. Use 'secure copy' to copy that file to 'Server2'. Confirm the copy succeeds without password entry.
+
+    [user@tcox4 ~]$ echo "This is from SERVER1" >> toTransfer.txt
+
+    [user@tcox4 ~]$ scp toTransfer.txt user@172.31.117.2:/home/user
+
+    toTransfer.txt                                100%   21     0.0KB/s   00:00 
+
+     
+
+5. Using 'secure copy', copy the file from Step #4 back to 'Server1' from 'Server2', renaming it to something else during the copy process, verify that no password was required.
+
+    [user@tcox4 ~]$ scp user@172.31.117.2:/home/user/toTransfer.txt inReceipt.txt
+
+    toTransfer.txt                                100%   21     0.0KB/s   00:00    
+
+    [user@tcox4 ~]$ ls -al
+
+    total 60
+
+    drwx------.  9 user user 4096 Sep  8 20:59 .
+
+    drwxr-xr-x.  3 root root   17 Jan 12  2015 ..
+
+    -rw-------.  1 user user 1089 Sep  8 20:49 .bash_history
+
+    -rw-r--r--.  1 user user   18 Sep 26  2014 .bash_logout
+
+    -rw-r--r--.  1 user user  193 Sep 26  2014 .bash_profile
+
+    -rw-r--r--.  1 user user  231 Sep 26  2014 .bashrc
+
+    drwx------.  6 user user 4096 Sep  8 20:45 .cache
+
+    drwxr-xr-x. 11 user user 4096 Aug  6 19:50 .config
+
+    drwxr-xr-x.  2 user user    6 Jan  7  2015 Desktop
+
+    -rw-------.  1 user user   16 Jan  7  2015 .esd_auth
+
+    -rw-------.  1 user user 3084 Sep  8 20:44 .ICEauthority
+
+    -rw-rw-r--.  1 user user   21 Sep  8 20:59 inReceipt.txt
+
+    drwxr-xr-x.  3 user user   18 Jan  7  2015 .local
+
+    drwxrwxr-x.  3 user user   14 Jan 12  2015 .openoffice
+
+    drwx------.  2 user user   54 Sep  8 20:54 .ssh
+
+    -rw-rw-r--.  1 user user   21 Sep  8 20:56 toTransfer.txt
+
+    -rw-------.  1 user user  891 Jan  7  2015 .viminfo
+
+    drwxrwxr-x.  2 user user 4096 Sep  8 20:44 .vnc
+
+    -rw-rw-r--.  1 user user  431 Aug  6 19:48 VNCHOWTO
+
+    -rw-------.  1 user user  718 Sep  8 20:44 .Xauthority
+
