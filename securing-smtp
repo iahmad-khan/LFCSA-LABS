@@ -1,0 +1,99 @@
+1. Using the SMTP 'Postfix' service configured in previous exercises, find the main configuration file. Add the appropriate configuration entry that disables mail clients that do not 'introduce' themselves with the standard 'HELO' or 'EHLO' announcement prior to sending mail. 
+
+    [root@tcox5 postfix]# vim main.cf
+
+    [root@tcox5 postfix]# cat main.cf | grep smtpd_helo
+
+    smtpd_helo_required = yes
+
+ 
+
+2. Restart Postfix to apply the change in Step #1. Using the 'telnet' client, attempt to connect to the SMTP service to send an email without using 'HELO' or 'EHLO' to begin the email session.
+
+    [root@tcox5 postfix]# systemctl restart postfix
+
+    [root@tcox5 postfix]# telnet localhost 25
+
+    Trying ::1...
+
+    Connected to localhost.
+
+    Escape character is '^]'.
+
+    220 tcox5.mylabserver.com ESMTP Postfix
+
+    MAIL
+
+    503 5.5.1 Error: send HELO/EHLO first
+
+    MAIL
+
+    503 5.5.1 Error: send HELO/EHLO first
+
+    ^]
+
+     
+
+    telnet> quit
+
+    Connection closed.
+
+     
+
+ 
+
+3. In the main configuration file, define a variable called 'mynetworks'. Set a comma delimited string of values that contains the following:
+
+  - localhost
+
+  - localhost.localdomain
+
+  - host (Note: your lab hostname will differ)
+
+  - host.mylabserver.com (Note: your lab hostname will differ)
+
+  - 127.0.0.1
+
+    [root@tcox5 postfix]# vim main.cf
+
+    [root@tcox5 postfix]# systemctl restart postfix
+
+    [root@tcox5 postfix]# cat * | grep mynetwork
+
+    # The mynetworks parameter specifies the list of "trusted" SMTP
+
+    # By default (mynetworks_style = subnet), Postfix "trusts" SMTP
+
+    # Specify "mynetworks_style = class" when Postfix should "trust" SMTP
+
+    # mynetworks list by hand, as described below.
+
+    # Specify "mynetworks_style = host" when Postfix should "trust"
+
+    #mynetworks_style = class
+
+    #mynetworks_style = subnet
+
+    #mynetworks_style = host
+
+    mynetworks = localhost, localhost.localdomain, tcox5, tcox5.mylabserver.com, 127.0.0.1
+
+ 
+
+4. Stop the service and rerun the alias DB rebuild command (which will verify the configuration and regenerate the alias DB).
+
+    [root@tcox5 postfix]# systemctl stop postfix
+
+    [root@tcox5 postfix]# postalias aliases
+
+ 
+
+5. Restrict the email server from accepting any emails for destinations that are NOT local (defined by the accounts/emails in the 'mynetworks' variable in Step #3). Restart the Postfix service to apply your changes.
+
+    [root@tcox5 postfix]# vim main.cf
+
+    [root@tcox5 postfix]# cat main.cf | grep smtpd_helo
+
+    smtpd_helo_required = yes
+
+    [root@tcox5 postfix]# systemctl stop postfi
