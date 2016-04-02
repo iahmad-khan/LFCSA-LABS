@@ -1,0 +1,77 @@
+1. Logged in as your default user, use the 'sudo' command to list the contents of the /var/log/syslog file and note the result.
+
+user@linuxacademy:~$ sudo cat /var/log/syslog
+
+OR
+
+user@linuxacademy:~$ sudo more /var/log/syslog
+
+(Output) user is not in the sudoers file.  This incident will be reported.
+
+ 
+
+2. Become the root user on the system. Determine if the user 'user' has 'sudo' privileges. If not, grant them by adding them directly to the appropriate file OR to the appropriate group. Verify by logging back in as 'user' and rerunning the command from Step #1.
+
+user@linuxacademy:~$ su -
+
+Password: (enter root password here)
+
+root@linuxacademy:~# cat /etc/sudoers | grep user
+
+(Output) does the user 'user' appear in the results?
+
+(Output) check for groups that have sudo rights
+
+root@linuxacademy:~# cat /etc/group | grep user
+
+(Output) does the 'user' user appear in any groups that have sudo rights in the above sudoers file?
+
+NOTE: If neither of the above has the 'user' entry, add the user to /etc/sudoers under root OR add to the 'wheel' group and be sure 'wheel' is uncommented in /etc/sudoers.
+
+root@linuxacademy:~# exit
+
+user@linuxacademy:~$ sudo cat /var/log/syslog
+
+(Output) 
+
+ Aug  8 07:59:46 linuxacademy anacron[12757]: Job `cron.daily' terminated
+
+Aug  8 07:59:46 linuxacademy anacron[12757]: Normal exit (1 job run)
+
+Aug  8 08:00:36 linuxacademy com.ubuntu.OneConf[2513]: WARNING:oneconf.hosts:Error in loading other_hosts file: [Errno 2] No such file or directory: '/home/user/.cache/oneconf/80847e55eaa94d66b911b4cd8c917b24/other_hosts'
+
+(Output) NOTE: Your output will differ as it is specific to each system
+
+ 
+
+ 3. As the default user, execute the appropriate command using 'sudo' to become the root user without having to know the root password.
+
+user@linuxacademy:~$ sudo su -
+
+[sudo] password for user: (enter 'user' password here)
+
+root@linuxacademy:~# 
+
+ 
+
+ 4. Using the 'user' account, execute the proper command to change the current root password without knowing it. Once changed, verify the password by executing an 'su' to the root account.
+
+user@linuxacademy:~$ sudo passwd root
+
+[sudo] password for user: (enter 'user' password here)
+
+Enter new UNIX password:
+
+Retype new UNIX password:
+
+Password Updated.
+
+user@linuxacademy:~$ su -
+
+Password: (enter root password from above here)
+
+root@linuxacademy:~# 
+
+ 
+
+ 
