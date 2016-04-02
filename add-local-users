@@ -1,0 +1,110 @@
+1. Using the 'useradd' command (the general, distribution neutral utility), create a user called 'username'. During creation be sure to use the appropriate options to assign the standard /home directory folder and specify the shell to use as /bin/bash.
+
+root@linuxacademy:~# useradd username -m -s /bin/bash
+
+ 
+
+2. Create a password for this user called 'password'. Copy the appropriate system skeleton files from the /etc directory so that the profile and bash parameters intended for all users exist in that directory. Modify the permissions and ownership of those files once copied appropriately.
+
+root@linuxacademy:~# passwd username
+
+Enter Password: password
+
+root@linuxacademy:~# cd /home/username
+
+root@linuxacademy:~# cp -rT /etc/skel/ .
+
+root@linuxacademy:~# chown username.username .*
+
+ 
+
+3. Login as that user and verify that the shell prompt looks as expected and the system skeleton files are where they should be and owned by the 'username' user and group. Exit that user and become root again.
+
+root@linuxacademy:~# sudo su - username
+
+username@linuxacademy:~$ ls -al
+
+(Output)-rw------- 1 username username      857 Aug  2 17:59 .bash_history
+
+(Output)-rw-r--r-- 1 username username      220 Aug  2 16:42 .bash_logout
+
+(Output)-rw-r--r-- 1 username username     3760 Aug  2 16:42 .bashrc
+
+username@linuxacademy:~$ exit
+
+ 
+
+4. Using the 'adduser' command, create a user called 'testuser' such that the full name is captured as 'Test User' with a Room Number of '123'.  
+
+root@linuxacademy:~# adduser testuser
+
+(Output) Adding user `testuser' ...
+
+Adding new group `testuser' (1003) ...
+
+Adding new user `testuser' (1003) with group `testuser' ...
+
+Creating home directory `/home/testuser' ...
+
+Copying files from `/etc/skel' ...
+
+Enter new UNIX password: 
+
+Retype new UNIX password: 
+
+passwd: password updated successfully
+
+Changing the user information for testuser
+
+Enter the new value, or press ENTER for the default
+
+Full Name []: Test User
+
+Room Number []: 123
+
+Work Phone []: 
+
+Home Phone []: 
+
+Other []: 
+
+Is the information correct? [Y/n] y
+
+NOTE: Your output may differ slightly on User/Group IDs above.
+
+ 
+
+5. Login as that user and verify that the shell prompt looks as expected and the system skeleton files are where they should be and owned by the 'testuser' user and group. Exit that user and become root again.
+
+root@linuxacademy:~# sudo su - testuser
+
+testuser@linuxacademy:~$ ls -al
+
+(Output)-rw------- 1 testuser testuser      857 Aug  2 17:59 .bash_history
+
+(Output)-rw-r--r-- 1 testuser testuser      220 Aug  2 16:42 .bash_logout
+
+(Output)-rw-r--r-- 1 testuser testuser     3760 Aug  2 16:42 .bashrc
+
+testuser@linuxacademy:~$ exit
+
+ 
+
+6. Add the user 'testuser' to the group called 'username'. Do not edit the groups file directly, use the appropriate options on the 'usermod' command. 
+
+root@linuxacademy:~# usermod -aG username testuser 
+
+ 
+
+7. Verify that the 'testuser' account has been added as a member of the 'username' group in the appropriate file.
+
+root@linuxacademy:~# cat /etc/group | grep username
+
+(Output) username:x:1003:testuser
+
+NOTE: Again, your group ID may be different on your system.
+
+ 
+
+ 
+
