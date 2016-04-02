@@ -1,0 +1,317 @@
+1. Install the appropriate package for generating SSL certificate keys and certificates on your distribution.
+
+    [root@linuxacademy ~]# yum install mod-ssl
+
+    (Output)
+
+    Package installation output here
+
+    (Output)
+
+ 
+
+2. Create a directory within the Apache directory tree for your certificates and keys to reside in and referenced in our configuration files or vhosts.
+
+    [root@linuxacademy ~]# mkdir /etc/httpd/ssl-certs
+
+     
+
+3. Using the appropriate Open SSL command, generate a KEY ONLY for a site called "www.mydomain.com" that:
+
+  - expires in two years
+
+  - uses RSA 2048 bit key
+
+  - typical x509 type
+
+  - the above domain
+
+  - administrative contact of 'webmin@mydomain.com'
+
+  - name the key the domain name and .key
+
+  - output to the directory created in Step #2
+
+    [root@linuxacademy ~]# openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout /etc/httpd/ssl-certs/www.mydomain.com.key 
+
+    Generating a 2048 bit RSA private key
+
+    ...........+++
+
+    ................+++
+
+    writing new private key to '/etc/httpd/ssl-certs/www.mydomain.com.key'
+
+    -----
+
+    You are about to be asked to enter information that will be incorporated
+
+    into your certificate request.
+
+    What you are about to enter is what is called a Distinguished Name or a DN.
+
+    There are quite a few fields but you can leave some blank
+
+    For some fields there will be a default value,
+
+    If you enter '.', the field will be left blank.
+
+    -----
+
+    Country Name (2 letter code) [XX]:US
+
+    State or Province Name (full name) []:NY
+
+    Locality Name (eg, city) [Default City]:New York
+
+    Organization Name (eg, company) [Default Company Ltd]:www.mydomain.com
+
+    Organizational Unit Name (eg, section) []:mydomain
+
+    Common Name (eg, your name or your server's hostname) []:www.mydomain.com
+
+    Email Address []:webmin@mydomain.com
+
+     
+
+ 
+
+4.  Using the appropriate Open SSL command, generate a key AND certificate  for a site called www.testdomain.com" that:
+
+  - expires in two years
+
+  - uses RSA 2048 bit key
+
+  - typical x509 type
+
+  - the above domain
+
+  - administrative contact of 'webmin@testdomain.com'
+
+  - output to the directory created in Step #2
+
+    [root@linuxacademy ~]# openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout /etc/httpd/ssl-certs/www.testdomain.com.key -out /etc/httpd/ssl-certs/www.testdomain.com.crt
+
+    Generating a 2048 bit RSA private key
+
+    ...........................................+++
+
+    ................+++
+
+    writing new private key to '/etc/httpd/ssl-certs/www.testdomain.com.key'
+
+    -----
+
+    You are about to be asked to enter information that will be incorporated
+
+    into your certificate request.
+
+    What you are about to enter is what is called a Distinguished Name or a DN.
+
+    There are quite a few fields but you can leave some blank
+
+    For some fields there will be a default value,
+
+    If you enter '.', the field will be left blank.
+
+    -----
+
+    Country Name (2 letter code) [XX]:US
+
+    State or Province Name (full name) []:NY
+
+    Locality Name (eg, city) [Default City]:New York
+
+    Organization Name (eg, company) [Default Company Ltd]:www.testdomain.com
+
+    Organizational Unit Name (eg, section) []:testdomain
+
+    Common Name (eg, your name or your server's hostname) []:www.testdomain.com
+
+    Email Address []:webmin@testdomain.com
+
+     
+
+ 
+
+5. Check the key files created in Steps #3 and #4 for validity. Verify that the certificate file was created in Step #4.
+
+    [root@linuxacademy ssl-certs]# ll
+
+    total 20
+
+    -rw-r--r--. 1 root root 1456 Aug 25 23:35 apache.crt
+
+    -rw-r--r--. 1 root root 1704 Aug 25 23:35 apache.key
+
+    -rw-r--r--. 1 root root 1704 Aug 26 18:32 www.mydomain.com.key
+
+    -rw-r--r--. 1 root root 1480 Aug 26 18:33 www.testdomain.com.crt
+
+    -rw-r--r--. 1 root root 1704 Aug 26 18:33 www.testdomain.com.key
+
+    [root@linuxacademy ssl-certs]# cat www.mydomain.com.key
+
+    -----BEGIN PRIVATE KEY-----
+
+    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDji9FZdLuMiETS
+
+    +aCQzdpJnwAERjW/TBBvcFaezULpIzQRMfWaW+46y/Cvt92rTGb2zu4ca+TCNjJk
+
+    cT5/s5ooqb8iiBf3q+ttCV42QwOqh/u+lr1kp7ZSncqDBwiR+CTlTpT4sxpWoPBp
+
+    TN8dC/eU3QsNvfPY72zEIs1P9ffNPhdOpCSq4q2pafuRMWvS92D+RMsRm4Q9K34z
+
+    ykAZwf1Imq4NjBkofoGPxhOXIPJgiXUHz3wpD6roEWo02/Z2mOekNgn0z67EU5vb
+
+    YvaeZ/11meHBJnzYDHO0IdvB0ipv/D68G/fzK5FiyF8S5pzswmxaq78absXYIsjF
+
+    6W9b/bS/AgMBAAECggEAUmNAhKRId+SrDryFj4iJPdjNF78YHNB8ruy84DivvlwZ
+
+    sRQmuiIJCs7msajgIPLD4R8hhbbnGA6phkaee3xbF9gGNYmTLADaeBtJOlpfTHJ6
+
+    CxLnNjenQxiQx4pXZwqyyTf/pmCq66zP/0BvFERN+19hbjNVxDlEZ2u2bPpBI9Vl
+
+    qtlaIXS4ioFIFi6HJCTZ0l3+ZoBGhCVGQDl0ESbULwjZrwUFz0GjEs/BXGx++hxa
+
+    5qEUd5as1iL9jCu8hqzCs7eJSLKyWrPXDjnz0uJMKZJIza2U+KeKw5diwFe9xWNC
+
+    gk37RcHaaqPzITVtZx0bgxLpQ50aPot3px1W7UxSUQKBgQD1utM7WU9fKNT5rf2q
+
+    wP/4vHnTi6VlXIVukUM+Ah6YhoeKIOYtTdGqCd8wUY+JS3UwL/98A2YsT4M/C9dC
+
+    dJa1Vs3e5xapRp1eSq6iPHRsEqz9TiqCaBw4p1E2ryAFChbpO0A7ibUk4LjgtBGS
+
+    4WCbCqdSKkOG/nl6bN2AyKG09wKBgQDtDnAS/GFd5R8zlccAtEeAWGhRyQPuAEsn
+
+    K4MRNhWhFrtNsuaJD57H6wY0dAOUqUmuvjNqWkEiBZ426Dr+fLP0TnuyARbyCP04
+
+    diomb6xPONhu8P1aKTQbeIELLZ5em6TMYuo9goMZNG7z4H4090yZyELdm4H5xn5K
+
+    S76WvVs0eQKBgQDYmZ2oKskz8CILE7sN0KHQ9xHLzsQz3KIhHBpRhjzB5ZODxgwe
+
+    0wGFCL6bMMl9E+5wU164Saa+WDgwUpekFHDj12gQm1H2VDBS9TGKAA//U1b40PXX
+
+    jT2TEqkbsrJevs4DOB8eW/w4TX2pVBBJkDA/edyTKH3teFJL/7of0rn3cQKBgQCT
+
+    oi08Nb+xyVLwPnRMRPpOvUBixuzSmY40W83ptyQrScvmrOcULw009nLL0gC04eVI
+
+    lZ3Ru1nbBWKuUV0ERseP/BzfE/ylSeHh+v1vKJdIU1+/YAh40TZpcVf0jTmXNBmj
+
+    TGsTWaep19TNv176P5WOJIE4IHQHCY53WMreeBlICQKBgH5kDwZhCrN5EzkwkoL2
+
+    JuXNsjgOl9hoNYoz5OnDogrQ2tXQiXcfNM50F6PgBGlV6eYlkbPzCom2izBctWIL
+
+    aRD0f7aWp+N2XxoveOU5MmQ3bOX0WgVcPlFYkkTLnruoj4gMXbVYzYlVCoPTlQCq
+
+    6CF1cOIGJJ7K4th+j19dgMuR
+
+    -----END PRIVATE KEY-----
+
+    [root@linuxacademy ssl-certs]# cat www.testdomain.com.key
+
+    -----BEGIN PRIVATE KEY-----
+
+    MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC3ScJLRnoqZSp9
+
+    HMabsvX9qPjzp34Izt1f3pt1+y7fUJKQrzYmB+GzSL6LCNQs33U/7G7chM5tJK9i
+
+    Ccx5e/oo9bEPBdrQ6cADoLyb5ybLpJA04TQD8uGeYhsR7VfRQAQsgor2FU7J0pcS
+
+    eeO2AmZNmM86GVj3Ecrb7ToaQ8ht9sIiADCjRmGbszpg5fVqSfw0wdSBrtpVEPzw
+
+    vgkd68Jrsa343VoZ/fQ3bOOQVKgd5CLjG6COaf4RbLE0g9nSDrVwC8365s8JFrEg
+
+    F5bsw1r/kPzDxkFqgcqBO89iPANJlzJn9rbb/JuDo6bxpL93/LmuhgqF+2G+9DLY
+
+    L6j02hrTAgMBAAECggEAWJMdgPErIofHM7UPSbj/Zbkdren4X1tQ4f6a1DYx3Zt7
+
+    aM4zdceDS/fQlTIMDy9h4yVoIctQUrBSzSb9GIxQRTEOgrsKlsEPmPE5lIHtXqZF
+
+    Rji6wVnDrJ2uhUhUkvvDyJrBetCrRZ8ugLBE2fVo6QD6zBHpy2Rey09mL8En//NY
+
+    lr6H9hpGUhrMlzsEtd3Py/pPYrRTiLygsn2GNWZ5HRT/wbFMH2NblSBULYo/Nqt4
+
+    VOjT38Q05WQ0hRQL2LSKjQgH1dS6axt4PzgFpizYtXy6AH7nqhBOQugb1NaOrk/0
+
+    etLCfnfTelwtMQR0QaaucBHbD4t4WxK5Hd2/6uuqoQKBgQDr9ZL18uxa6AuPk82Y
+
+    OmybgTBiM+lDp6wB3OiKevcEAqPcoIcleCN3KTpSsFk0e6nyXsyC9aPgSUmiZOTQ
+
+    HZJCe4UwaE+HCuvWRTW5tcZa/eAfavT4vLfMB0bNIghIgTkl/PPnzJ2nmZ7PxtNx
+
+    gFqlB27Qs+JJq+zWncCfO3o3MQKBgQDG2vbUj9LGuI94BdmM+ae9sPC2BiAiMwPT
+
+    kPmMOZAhFZx2K45P2cCZOrAJmN8prprnYsuSqut4mUUxirVMpKoTeyMdE53yoOW5
+
+    rzknlfoXTrgm0hCY+gd0kZ8UVUeX/GjK6hE+IM23TCR7PI4G07p9rbE3TbmNc+mG
+
+    JHkYWV/5QwKBgQCU7x5hq4FQJ+MULwC4MzhWNwbpFUcI8w545ozIy7CakWgIXDKx
+
+    jdEk55rukmzb2ap9VyTTDGTxrpCRtglO6ztkRz7cPRrlbBlL18d/fqLC0Dfk3Mff
+
+    MI76cyVXWUHNMfN2bOEu0FI6dZZuI1tW6uNMAxMJHGGairAlDtGEMDCGIQKBgH6x
+
+    HrVKdIV7LJzRTUuN+5rVUmcF/A8N5ZAzO2plejg55pc7JM4m85gsVd+nb/bEcZid
+
+    zwlAsAkDzZvEvcF434rN1w89YlIkxHfK9WUNHmsfEiBZkY2FLp7L8EgqFRT2EWXG
+
+    PvoQOEBh2JRTfkFHP/e2Y8PSVzeR8+Qs9KHYv1a1AoGAXa+9WR9ScDNzPXkbt+RT
+
+    APVvqp4cqSbIjZRgcFbCtjtI7lswf3mee6JpQ79zyq8fGpYF+TmoQ1eo/sMem8RK
+
+    J1sc46PpnliUKoSXu9pNQIyYy1nt8qw4c6fHdyT3EBZzkNjX5sziIoHT/YvwMWIo
+
+    Wq5aIavUYmB98LqpVJdXrEk=
+
+    -----END PRIVATE KEY-----
+
+    [root@linuxacademy ssl-certs]# cat www.testdomain.com.crt
+
+    -----BEGIN CERTIFICATE-----
+
+    MIIEGTCCAwGgAwIBAgIJANuK6rSPZOS7MA0GCSqGSIb3DQEBCwUAMIGiMQswCQYD
+
+    VQQGEwJVUzELMAkGA1UECAwCTlkxETAPBgNVBAcMCE5ldyBZb3JrMRswGQYDVQQK
+
+    DBJ3d3cudGVzdGRvbWFpbi5jb20xEzARBgNVBAsMCnRlc3Rkb21haW4xGzAZBgNV
+
+    BAMMEnd3dy50ZXN0ZG9tYWluLmNvbTEkMCIGCSqGSIb3DQEJARYVd2VibWluQHRl
+
+    c3Rkb21haW4uY29tMB4XDTE1MDgyNjE4MzM0N1oXDTE3MDgyNTE4MzM0N1owgaIx
+
+    CzAJBgNVBAYTAlVTMQswCQYDVQQIDAJOWTERMA8GA1UEBwwITmV3IFlvcmsxGzAZ
+
+    BgNVBAoMEnd3dy50ZXN0ZG9tYWluLmNvbTETMBEGA1UECwwKdGVzdGRvbWFpbjEb
+
+    MBkGA1UEAwwSd3d3LnRlc3Rkb21haW4uY29tMSQwIgYJKoZIhvcNAQkBFhV3ZWJt
+
+    aW5AdGVzdGRvbWFpbi5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+
+    AQC3ScJLRnoqZSp9HMabsvX9qPjzp34Izt1f3pt1+y7fUJKQrzYmB+GzSL6LCNQs
+
+    33U/7G7chM5tJK9iCcx5e/oo9bEPBdrQ6cADoLyb5ybLpJA04TQD8uGeYhsR7VfR
+
+    QAQsgor2FU7J0pcSeeO2AmZNmM86GVj3Ecrb7ToaQ8ht9sIiADCjRmGbszpg5fVq
+
+    Sfw0wdSBrtpVEPzwvgkd68Jrsa343VoZ/fQ3bOOQVKgd5CLjG6COaf4RbLE0g9nS
+
+    DrVwC8365s8JFrEgF5bsw1r/kPzDxkFqgcqBO89iPANJlzJn9rbb/JuDo6bxpL93
+
+    /LmuhgqF+2G+9DLYL6j02hrTAgMBAAGjUDBOMB0GA1UdDgQWBBSaiIVWlliuXL3H
+
+    chZokdjr0CGnoDAfBgNVHSMEGDAWgBSaiIVWlliuXL3HchZokdjr0CGnoDAMBgNV
+
+    HRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQByP63DkZI/Ha2pViTQ8lVglq6o
+
+    WMrttmTjFuEPLMdDeSyRdpMlLXsbOn1geUfpZLwXVkDxrN1ySww9+eueTbxycMNh
+
+    wwTmB9fFfEUf5M2zuHehsd6BTT7SpKCF11sY4UxId7z1JW5/4/K8B6E9n2Rr9tlO
+
+    m2uK4PSRC5fyuZKX59mDgm7goTh40FOd+yJsNhzOUW+Y6k/FsOPqAiNUAt3PSn9q
+
+    KwHxSgpnOfUtx3exR3popmY+8thKITaGZzXFsFnucPAdSrUzkncczG/463f68MLl
+
+    ckKE+MCO07/6vvPMAu3jCHz0lLlp84qrQN29HkQ1A82CRnfF03GH+GvNMOzU
+
+    -----END CERTIFICATE-----
