@@ -1,0 +1,127 @@
+1. Make sure that your system has Apache Web Server installed. Verify that the server is running, listening for HTTP connections on port 80.
+
+    root@tcox5:~# ps aux | grep http
+
+    root      1986  0.0  0.0  10460   932 pts/1    S+   17:08   0:00 grep --color=auto http
+
+    root@tcox5:~# ps aux | grep apache
+
+    root      1546  0.0  0.3  89172  4056 ?        Ss   17:05   0:00 /usr/sbin/apache2 -k start
+
+    www-data  1549  0.0  0.4 378328  4880 ?        Sl   17:05   0:00 /usr/sbin/apache2 -k start
+
+    www-data  1550  0.0  0.4 378328  4880 ?        Sl   17:05   0:00 /usr/sbin/apache2 -k start
+
+    root      1988  0.0  0.0  10460   932 pts/1    S+   17:08   0:00 grep --color=auto apache
+
+    root@tcox5:~# telnet localhost 80
+
+    Trying 127.0.0.1...
+
+    Connected to localhost.
+
+    Escape character is '^]'.
+
+    helo
+
+    501 Not Implemented
+
+    helo to /index.html not supported.
+
+    Apache/2.4.7 (Ubuntu) Server at 127.0.0.1 Port 80
+
+    Connection closed by foreign host.
+
+     
+
+2. Move to the appropriate directory and list the available VHOSTS. Create a new VHOST called "XXX.mylabserver.com" where XXX matches the name of your Linux Academy Lab Server as display in your server tab, add the .conf extension to the end of the file. As part of the name, differentiate the HTTP version of the file so that we can create a separate configuration for HTTPS in a later exercise.
+
+    root@tcox5:/etc/apache2# cd sites-available/
+
+    root@tcox5:/etc/apache2# cp 000-default.conf tcox5.mylabserver.com_http.conf
+
+    root@tcox5:/etc/apache2/sites-available# ll
+
+    total 32
+
+    drwxr-xr-x 2 root root 4096 Aug 29 16:52 ./
+
+    drwxr-xr-x 9 root root 4096 Aug 29 16:46 ../
+
+    -rw-r--r-- 1 root root 1332 Jan  7  2014 000-default.conf
+
+    -rw-r--r-- 1 root root 6437 Jan  7  2014 default-ssl.conf
+
+    -rw-r--r-- 1 root root 1312 Aug 29 16:31 tcox5.mylabserver.com_http.conf
+
+    -rw-r--r-- 1 root root 6473 Aug 29 16:52 tcox5.mylabserver.com_https.conf
+
+     
+
+3. Edit that configuration file so that is contains the appropriate sections and variables for the site path, error and access logs and the server name and any aliases. Display the contents once completed.
+
+    root@tcox5:/etc/apache2/sites-available# cat tcox5.mylabserver.com_https.conf 
+
+     
+
+     
+
+    ServerAdmin webmaster@localhost
+
+     
+
+    DocumentRoot /var/www/tcox5
+
+    ServerName tcox5.mylabserver.com
+
+    ServerAlias tcox5
+
+     
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+     
+
+     
+
+     
+
+     
+
+     
+
+     
+
+     
+
+4. Create a directory to contain your custom VHOST site files. Once created, add the following HTML code to a file in that directory called 'index.html'
+
+  -XXX.MYLABSERVER.COM
+
+  - Please note: replace 'xxx' above with the name of your Linux Academy Lab Server as indicated in the server tab of the site
+
+    root@tcox5:/etc/apache2/sites-available# mkdir /var/www/tcox5
+
+    root@tcox5:/etc/apache2/sites-available# echo "TCOX5.MYLABSERVER.COM" > /var/www/tcox5/index.html
+
+ 
+
+5. Execute the appropriate command to enable that new VHOST configuration on the site. Restart the web server. Once restarted, browser (by NAME) to the site and verify that the file created in Step #4 is what appears.
+
+    root@tcox5:/etc/apache2/sites-available# sudo a2ensite tcox5.mylabserver.com_http.conf 
+
+    root@tcox5:/etc/apache2/sites-available# sudo a2ensite tcox5.mylabserver.com_http.conf 
+
+    Enabling site tcox5.mylabserver.com_http.
+
+    To activate the new configuration, you need to run:
+
+      service apache2 reload
+
+    root@tcox5:/etc/apache2/sites-available# service apache2 reload
+
+     * Reloading web server apache2                                                                                                                               * 
+
+    (NOTE) Here you will have to open a browser and go to the site named in your VHOST.
