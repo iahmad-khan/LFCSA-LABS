@@ -1,0 +1,156 @@
+1. Using the discussed replacement command for the now deprecated 'netstat' utility, run a command with the appropriate options to display the current open, closed, establish and orphaned TCP processes on the system.
+
+    [user@linuxacademy:~]$ ss -s
+
+    Total: 136 (kernel 0)
+
+    TCP:   6 (estab 2, closed 0, orphaned 0, synrecv 0, timewait 0/0), ports 0
+
+     
+
+    Transport Total     IP        IPv6
+
+    *         0         -         -
+
+    RAW       1         0         1
+
+    UDP       7         5         2
+
+    TCP       6         4         2
+
+    INET      14        9         5
+
+    FRAG      0         0         0
+
+ 
+
+2. With that same command, run a scan for all open ports on the system and then again listing processes open by socket.
+
+    [user@linuxacademy:~]$ ss -l
+
+    Netid State      Recv-Q Send-Q                                                                    Local Address:Port                                                                        Peer Address:Port
+
+    nl    UNCONN     0      0                                                                                  rtnl:4194923                                                                                 *
+
+    nl    UNCONN     0      0                                                                                  rtnl:NetworkManager/619                                                                                 *
+
+    nl    UNCONN     0      0                                                                                  rtnl:kernel                                                                                  *
+
+    nl    UNCONN     0      0                                                                                  rtnl:avahi-daemon/620                                                                                 *
+
+    nl    UNCONN     0      0                                                                                  rtnl:4194923
+
+    (OUTPUT) NOTE: Your output may be much larger, this is a sample 
+    [user@linuxacademy:~]$ ss -pl
+
+    Netid State      Recv-Q Send-Q                                                                    Local Address:Port                                                                        Peer Address:Port
+
+    nl    UNCONN     0      0                                                                                  rtnl:4194923                                                                                 *
+
+    nl    UNCONN     0      0                                                                                  rtnl:NetworkManager/619                                                                                 *
+
+    nl    UNCONN     0      0                                                                                  rtnl:kernel                                                                                  *
+
+    nl    UNCONN     0      0                                                                                  rtnl:avahi-daemon/620                                                                                 *
+
+    nl    UNCONN     0      0                                                                                  rtnl:4194923                                                                                 *
+
+    (OUTPUT) NOTE: This is sample output, your output will likely be much larger
+
+ 
+
+3. Run the command that allows you to filter IPv4 traffic by type - show types ESTABLISHED and LISTEN.
+
+    [user@linuxacademy ~]$ ss -4 state ESTABLISHED
+
+    Netid Recv-Q Send-Q              Local Address:Port                  Peer Address:Port
+
+    u_str 0      0                               * 18851                            * 19591
+
+    u_str 0      0      /run/systemd/journal/stdout 13776                            * 13775
+
+    u_str 0      0      /var/run/dbus/system_bus_socket 16454                            * 1645
+
+    (Output) NOTE: Your output will be longer and differ
+
+    [user@linuxacademy ~]$ ss -4 state LISTEN
+
+    ss: no socket states to show with such filter.
+
+ 
+
+4. Download and run the 'dstat' command using the appropriate package manager. Using the command, display the current processes, memory and network bandwidth utilization of the server.
+
+    [user@linuxacademy ~]$ sudo yum -y install dstat OR sudo apt-get -y install dstat
+
+    [user@linuxacademy ~]$ dstat
+
+    You did not select any stats, using -cdngy by default.
+
+    ----total-cpu-usage---- -dsk/total- -net/total- ---paging-- ---system--
+
+    usr sys idl wai hiq siq| read  writ| recv  send|  in   out | int   csw
+
+      0   0 100   0   0   0|  12k   39k|   0     0 |   0     0 |  55    97
+
+      0   0 100   0   0   0|   0     0 | 513B  830B|   0     0 |  55   105
+
+      0   0 100   0   0   0|   0    55k| 431B  410B|   0     0 |  57   108 
+
+    (Output) NOTE: Sample Output 
+
+5. Repeat the above command but changing the sampling to run every five seconds and execute only ten iterations of it before stopping.
+
+[user@linuxacademy ~]$ dstat 5 10
+
+    You did not select any stats, using -cdngy by default.
+
+    ----total-cpu-usage---- -dsk/total- -net/total- ---paging-- ---system--
+
+    usr sys idl wai hiq siq| read  writ| recv  send|  in   out | int   csw
+
+      0   0 100   0   0   0|  12k   39k|   0     0 |   0     0 |  55    97
+
+      0   0 100   0   0   0|   0  2355B| 665B  436B|   0     0 |  37    66
+
+      0   0 100   0   0   0|   0    29k| 773B  337B|   0     0 |  41    69
+
+      0   0 100   0   0   0|   0     0 | 573B  337B|   0     0 |  34    58
+
+      0   0 100   0   0   0|   0     0 | 411B  337B|   0     0 |  34    64
+
+      0   0 100   0   0   0|   0     0 | 527B  349B|   0     0 |  36    65
+
+      0   0 100   0   0   0|   0     0 | 413B  349B|   0     0 |  35    66
+
+      0   0 100   0   0   0|   0    22k| 833B  337B|   0     0 |  49    78
+
+      0   0 100   0   0   0|   0     0 |1351B  337B|   0     0 |  75   125
+
+      0   0 100   0   0   0|   0     0 | 597B  337B|   0     0 |  54   105
+
+      0   0 100   0   0   0|   0     0 | 497B  367B|   0     0 |  56   109
+
+ 
+
+6. Run the same command once more to display ONLY network statistics every two seconds, looping through five executions before exiting.
+
+    [user@linuxacademy ~]$ dstat -n 2 5
+
+    -net/total-
+
+     recv  send
+
+     621B  182B
+
+     580B  150B
+
+     371B  150B
+
+     694B  150B
+
+     737B  180B
+     
+     
+     for ip traffic , use iptraf command
+     
