@@ -1,0 +1,381 @@
+1. Using the appropriate update management tool, make sure that your system is up to date, automatically installing any needed updates without further confirmation.
+
+    [root@tcox2 ~]# yum -y update
+
+    Loaded plugins: fastestmirror
+
+    Loading mirror speeds from cached hostfile
+
+     * base: mirrors.advancedhosters.com
+
+     * extras: mirror.trouble-free.net
+
+     * updates: mirrors.lga7.us.voxel.net
+
+    Resolving Dependencies
+
+    --> Running transaction check
+
+    ---> Package bind-libs-lite.x86_64 32:9.9.4-18.el7_1.3 will be updated
+
+    ---> Package bind-libs-lite.x86_64 32:9.9.4-18.el7_1.5 will be an update
+
+    ---> Package bind-license.noarch 32:9.9.4-18.el7_1.3 will be updated
+
+    ---> Package bind-license.noarch 32:9.9.4-18.el7_1.5 will be an update
+
+    ---> Package gdk-pixbuf2.x86_64 0:2.28.2-4.el7 will be updated
+
+    ---> Package gdk-pixbuf2.x86_64 0:2.28.2-5.el7_1 will be an update
+
+    ---> Package libXfont.x86_64 0:1.4.7-2.el7_0 will be updated
+
+    ---> Package libXfont.x86_64 0:1.4.7-3.el7_1 will be an update
+
+    ---> Package mariadb-libs.x86_64 1:5.5.41-2.el7_0 will be updated
+
+    ---> Package mariadb-libs.x86_64 1:5.5.44-1.el7_1 will be an update
+
+    ---> Package nss-softokn.x86_64 0:3.16.2.3-12.el7_1 will be updated
+
+    ---> Package nss-softokn.x86_64 0:3.16.2.3-13.el7_1 will be an update
+
+    ---> Package nss-softokn-freebl.x86_64 0:3.16.2.3-12.el7_1 will be updated
+
+    ---> Package nss-softokn-freebl.x86_64 0:3.16.2.3-13.el7_1 will be an update
+
+    ---> Package selinux-policy.noarch 0:3.13.1-23.el7_1.13 will be updated
+
+    ---> Package selinux-policy.noarch 0:3.13.1-23.el7_1.17 will be an update
+
+    ---> Package selinux-policy-targeted.noarch 0:3.13.1-23.el7_1.13 will be updated
+
+    ---> Package selinux-policy-targeted.noarch 0:3.13.1-23.el7_1.17 will be an update
+
+    --> Finished Dependency Resolution
+
+     
+
+    Package Updated Continue Here...
+
+ 
+
+2. Install the package called 'tmux' on the system. List all packages that are currently installed on the system and place them into a file in your home directory called "packages.list".
+
+    [root@tcox2 ~]# yum install -y tmux
+
+    Loaded plugins: fastestmirror
+
+    Loading mirror speeds from cached hostfile
+
+     * base: mirrors.advancedhosters.com
+
+     * extras: mirror.trouble-free.net
+
+     * updates: mirrors.lga7.us.voxel.net
+
+    Resolving Dependencies
+
+    --> Running transaction check
+
+    ---> Package tmux.x86_64 0:1.8-4.el7 will be installed
+
+    --> Finished Dependency Resolution
+
+     
+
+    Dependencies Resolved
+
+     
+
+    ========================================================================================================================
+
+     Package                   Arch                        Version                          Repository                 Size
+
+    ===============================================================================================
+
+    Installing:
+
+     tmux                      x86_64                      1.8-4.el7                        base                      243 k
+
+     
+
+    Transaction Summary
+
+    ==============================================================================================
+
+    Install  1 Package
+
+     
+
+    Total download size: 243 k
+
+    Installed size: 558 k
+
+    Downloading packages:
+
+    tmux-1.8-4.el7.x86_64.rpm                                                                        | 243 kB  00:00:00
+
+    Running transaction check
+
+    Running transaction test
+
+    Transaction test succeeded
+
+    Running transaction
+
+      Installing : tmux-1.8-4.el7.x86_64                                                                                1/1
+
+      Verifying  : tmux-1.8-4.el7.x86_64                                                                                1/1
+
+     
+
+    Installed:
+
+      tmux.x86_64 0:1.8-4.el7
+
+     
+
+    Complete!
+
+    [root@tcox2 ~]# yum list installed > packages.list
+
+    [root@tcox2 ~]# ls -al packages.list
+
+     
+
+    -rw-r--r--. 1 root root 57000 Sep 10 18:24 packages.list
+
+     
+
+ 
+
+3. Search the currently configured repositories for all packages that contain or reference the word 'graph' and place the results into a file called 'graph.results'. Display them.
+
+    [root@tcox2 ~]# yum search graph > graph.results
+
+    [root@tcox2 ~]# cat graph.results
+
+    Loaded plugins: fastestmirror
+
+    Loading mirror speeds from cached hostfile
+
+     * base: mirrors.advancedhosters.com
+
+     * extras: mirror.trouble-free.net
+
+     * updates: mirrors.lga7.us.voxel.net
+
+    ============================== N/S matched: graph ==============================
+
+    boost-graph.i686 : Run-Time component of boost graph library
+
+    boost-graph.x86_64 : Run-Time component of boost graph library
+
+    boost-graph-mpich.i686 : Run-Time component of parallel boost graph library
+
+    boost-graph-mpich.x86_64 : Run-Time component of parallel boost graph library
+
+    boost-graph-openmpi.i686 : Run-Time component of parallel boost graph library
+
+    boost-graph-openmpi.x86_64 : Run-Time component of parallel boost graph library
+
+    graphite2-devel.i686 : Files for developing with graphite2
+
+    graphite2-devel.x86_64 : Files for developing with graphite2
+
+    (NOTE THAT YOUR RESULTS MAY BE LONGER AND DIFFERENT)
+
+    ...
+
+ 
+
+4. Running the appropriate command, run a check on your system to see if any packages still need to be updated.
+
+    [root@tcox2 ~]# yum check-update
+
+    Loaded plugins: fastestmirror
+
+    Repodata is over 2 weeks old. Install yum-cron? Or run: yum makecache fast
+
+    base                                                                                                                                                                                      | 3.6 kB  00:00:00
+
+    extras                                                                                                                                                                                    | 3.4 kB  00:00:00
+
+    updates                                                                                                                                                                                   | 3.4 kB  00:00:00
+
+    (1/2): extras/7/x86_64/primary_db                                                                                                                                                         |  74 kB  00:00:00
+
+    (2/2): updates/7/x86_64/primary_db                                                                                                                                                        | 3.3 MB  00:00:01
+
+    Determining fastest mirrors
+
+     * base: mirrors.advancedhosters.com
+
+     * extras: mirror.trouble-free.net
+
+     * updates: mirrors.lga7.us.voxel.net
+
+     
+
+    bind-libs-lite.x86_64                                                                                     32:9.9.4-18.el7_1.5                                                                             updates
+
+    bind-license.noarch                                                                                       32:9.9.4-18.el7_1.5                                                                             updates
+
+    gdk-pixbuf2.x86_64                                                                                        2.28.2-5.el7_1                                                                                  updates
+
+    libXfont.x86_64                                                                                           1.4.7-3.el7_1                                                                                   updates
+
+    mariadb-libs.x86_64                                                                                       1:5.5.44-1.el7_1                                                                                updates
+
+    nss-softokn.x86_64                                                                                        3.16.2.3-13.el7_1                                                                               updates
+
+    nss-softokn-freebl.x86_64                                                                                 3.16.2.3-13.el7_1                                                                               updates
+
+    selinux-policy.noarch                                                                                     3.13.1-23.el7_1.17                                                                              updates
+
+    selinux-policy-targeted.noarch 
+
+ 
+
+5. Completely remove the 'tmux' package we installed in Step #2. Verify afterwards by rerunning the command to list all packaged and search for the 'tmux' package.
+
+    [root@tcox2 ~]# yum erase tmux
+
+    Loaded plugins: fastestmirror
+
+    Resolving Dependencies
+
+    --> Running transaction check
+
+    ---> Package tmux.x86_64 0:1.8-4.el7 will be erased
+
+    --> Finished Dependency Resolution
+
+     
+
+    Dependencies Resolved
+
+     
+
+    ========================================================================================================================
+
+     Package                   Arch                        Version                         Repository                  Size
+
+    ========================================================================================================================
+
+    Removing:
+
+     tmux                      x86_64                      1.8-4.el7                       @base                      558 k
+
+     
+
+    Transaction Summary
+
+    ========================================================================================================================
+
+    Remove  1 Package
+
+     
+
+    Installed size: 558 k
+
+    Is this ok [y/N]: y
+
+    Downloading packages:
+
+    Running transaction check
+
+    Running transaction test
+
+    Transaction test succeeded
+
+    Running transaction
+
+      Erasing    : tmux-1.8-4.el7.x86_64                                                                                1/1
+
+      Verifying  : tmux-1.8-4.el7.x86_64                                                                                1/1
+
+     
+
+    Removed:
+
+      tmux.x86_64 0:1.8-4.el7
+
+     
+
+    Complete!
+
+    [root@tcox2 ~]# yum list installed > packages.list2
+
+    [root@tcox2 ~]# diff packages.list packages.list2
+
+    647d646
+
+    < tmux.x86_64                           1.8-4.el7                        @base
+
+ 
+
+6. Using the update management tool, find out what the 'tmux' package provides and the current repository version of it.
+
+    [root@tcox2 ~]# yum provides tmux
+
+    Loaded plugins: fastestmirror
+
+    Loading mirror speeds from cached hostfile
+
+     * base: mirrors.advancedhosters.com
+
+     * extras: mirror.trouble-free.net
+
+     * updates: mirrors.lga7.us.voxel.net
+
+    tmux-1.8-4.el7.x86_64 : A terminal multiplexer
+
+    Repo        : base
+
+     
+
+7. List all of the information that is available for the 'tmux' package from the repositories and place it into a file called 'tmux.info' in your home directory. Display it.
+
+     [root@tcox2 ~]# yum info tmux > tmux.info
+
+    [root@tcox2 ~]# cat tmux.info
+
+    Loaded plugins: fastestmirror
+
+    Loading mirror speeds from cached hostfile
+
+     * base: mirrors.advancedhosters.com
+
+     * extras: mirror.trouble-free.net
+
+     * updates: mirrors.lga7.us.voxel.net
+
+    Available Packages
+
+    Name        : tmux
+
+    Arch        : x86_64
+
+    Version     : 1.8
+
+    Release     : 4.el7
+
+    Size        : 243 k
+
+    Repo        : base/7/x86_64
+
+    Summary     : A terminal multiplexer
+
+    URL         : http://sourceforge.net/projects/tmux
+
+    License     : ISC and BSD
+
+    Description : tmux is a "terminal multiplexer."  It enables a number of
+
+                : terminals (or windows) to be accessed and controlled from a single
+
+                : terminal.  tmux is intended to be a simple, modern, BSD-licensed
+
+                : alternative to programs such as GNU Screen.
