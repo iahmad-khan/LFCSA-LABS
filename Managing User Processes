@@ -1,0 +1,87 @@
+1. List the processes running on the system owned by the active user called 'user' that you are logged in as. Using that same user, list all processes currently running on the system.
+
+ user@linuxacademy:~$ ps
+
+ (Output)
+
+  PID TTY          TIME CMD
+
+15551 pts/18   00:00:00 bash
+
+16004 pts/18   00:00:00 ps
+
+(Output) NOTE: The processes running on your system may differ
+
+ 
+
+2. Run one of the common commands that will display the top running processes on the system, updating their status while running until quit.
+
+user@linuxacademy:~$ su -
+
+Password: (enter root password)
+
+root@linuxacademy:~# top (or htop or w with a loop counter)
+
+(Output) TOP
+
+top - 17:34:00 up 24 days,  1:50,  3 users,  load average: 0.80, 0.82, 0.84
+
+Tasks: 283 total,   1 running, 282 sleeping,   0 stopped,   0 zombie
+
+(Output) NOTE: Your output will differ depending on the system and command used to display
+
+ 
+
+ 3. Become the root user. Notice that some processes are associated with TTY or terminal while others are not. Run the appropriate command to list ONLY those processes that are associated with a TTY or terminal on the system, regardless of the user.
+
+user@linuxacademy:~$ su -
+
+Password: (enter root password)
+
+root@linuxacademy:~# ps au
+
+(Output)
+
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+
+root      1367  0.1  0.6 569156 220212 tty7    Ss+  Jul15  35:10 /usr/bin/X -core :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+
+root      1371  0.0  0.0  20052  2048 tty1     Ss+  Jul15   0:00 /sbin/agetty --noclear tty1 linux
+
+user      3163  0.0  0.0  26952  5552 pts/7    Ss+  Jul15   0:00 /bin/bash
+
+(Output) NOTE: Your output will differ depending on processes and users on the system
+
+ 
+
+4. Using the appropriate command, determine if the 'cron' service is running (either 'cron' or 'crond' depending on the distribution. If so, as the 'user' user, execute the kill command and note the result.
+
+user@linuxacademy:~$ ps aux | grep cron
+
+root       790  0.0  0.0  33128  3024 ?        Ss   Jul15   0:01 /usr/sbin/cron -f
+
+user     16035  0.0  0.0  13692  2216 pts/18   S+   17:38   0:00 grep --color=auto cron
+
+(Output) NOTE: Your output may differ depending on distribution
+
+user@linuxacademy:~$ kill 790
+
+-bash: kill: (790) - Operation not permitted
+
+ 
+
+5. Become the root user again. Using the previous PID from the cron service, execute the kill command and note the result. If you restart the cron service, execute the appropriate kill command switch to cause the service to stop and restart.
+
+ user@linuxacademy:~$ sudo kill 790
+
+(Output) No output if successful
+
+user@linuxacademy:~$ sudo systemctl start crond (or sudo service cron start or sudo /etc/init.d/crond start)
+
+(Output) No output if successful
+
+user@linuxacademy:~$ ps aux | grep cron
+
+(Output) Note the cron PID
+
+user@linuxacademy:~$ sudo kill -SIGHUP PID (from above)
